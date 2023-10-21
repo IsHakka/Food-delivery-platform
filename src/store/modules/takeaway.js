@@ -1,32 +1,44 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const foodStore  = createSlice({
-    name:'foods',
-    initialState:{
+export const foodStore = createSlice({
+    name: 'foods',
+    initialState: {
         // 商品列表
-        foodsList:[],
+        foodsList: [],
         // 菜單標籤狀態
-        activeIndex:0
+        activeIndex: 0,
+        // 購物車列表
+        cartList: []
     },
-    reducers:{
+    reducers: {
         // 更改商品列表
-        setFoodList(state,action){
+        setFoodList(state, action) {
             state.foodsList = action.payload;
         },
         // 勾改activeIndex
-        changeActiveIndex(state,action){
+        changeActiveIndex(state, action) {
             state.activeIndex = action.payload;
+        },
+        // 添加至購物車
+        addCart(state, action) {
+            const item = state.cartList.find(item => item.id === action.payload.id);
+            if (item) {
+                item.count++
+                console.log(item.count);
+            } else {
+                state.cartList.push(action.payload)
+            }
         }
     }
 });
-const {setFoodList} = foodStore.actions;   
+const { setFoodList } = foodStore.actions;
 
-export const fetchFoodList = () =>{
-    return async(dispatch)=>{ 
+export const fetchFoodList = () => {
+    return async (dispatch) => {
         const res = await axios.get('http://localhost:3004/takeaway');
         dispatch(setFoodList(res.data))
     }
 }
 
-export const {changeActiveIndex} = foodStore.actions
+export const { changeActiveIndex, addCart } = foodStore.actions
