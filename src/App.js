@@ -13,7 +13,7 @@ const foodsList = [
       {
         "id": 8078956697,
         "name": "烤羊肉串(10串)",
-        "like_ratio_desc": "好评度100%",
+        "like_ratio_desc": "好評度100%",
         "month_saled": 40,
         "unit": "10串",
         "food_tag_list": ["点评网友推荐"],
@@ -66,7 +66,7 @@ const App = () => {
 
   return (
     <div className="home">
-      {/* 导航 */}
+      {/* 導航 */}
       <NavBar />
 
       {/* 内容 */}
@@ -81,7 +81,7 @@ const App = () => {
                 return (
                   <FoodsCategory
                     key={item.tag}
-                    // 列表标题
+                    // 列表標題
                     name={item.name}
                     // 列表商品
                     foods={item.foods}
@@ -93,7 +93,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* 购物车 */}
+      {/* 購物車 */}
       <Cart />
     </div>
   )
