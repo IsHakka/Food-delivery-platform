@@ -1,27 +1,37 @@
 import classNames from 'classnames'
 import Count from '../Count'
 import './index.scss'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { addCounter, subCounter, clearCart } from '../../store/modules/takeaway'
+import { useState } from 'react'
+import { flatMap } from 'lodash'
 
 const Cart = () => {
   const { cartList } = useSelector(state => state.foods)
   // 總金額
   const totalPrice = cartList.reduce((a, b) => a + b.price * b.count, 0)
-  const cart = []
-
+  const dispatch = useDispatch()
+  // 控制購物車打開
+  const [visible, setVisible] = useState(false);
+  const onShow = ()=>{
+    if(cartList.length > 0){
+      setVisible(true);
+    }
+  }
   return (
     <div className="cartContainer">
-      {/* 遮罩层 添加visible類名可以顯示出来 */}
+      {/* 遮罩層 添加visible類名可以顯示出来 */}
       <div
-        className={classNames('cartOverlay')}
+        className={classNames('cartOverlay', visible && 'visible')}
+        onClick={() => setVisible(false)}
       />
       <div className="cart">
         {/* fill 添加fill類名可以切換購物車狀態*/}
-        {/* 购物车数量 */}
-        <div className={classNames('icon',cartList.length > 0 && 'fill')}>
+        {/* 購物車数量 */}
+        <div onClick={onShow()} className={classNames('icon', cartList.length > 0 && 'fill')}>
           {cartList.length > 0 && <div className="cartCornerMark">{cartList.length}</div>}
         </div>
-        {/* 购物车价格 */}
+        {/* 購物車價格 */}
         <div className="main">
           <div className="price">
             <span className="payableAmount">
@@ -29,27 +39,27 @@ const Cart = () => {
               {totalPrice}
             </span>
           </div>
-          <span className="text">预估另需配送费 ¥5</span>
+          <span className="text">预估另需配送費 $15</span>
         </div>
-        {/* 结算 or 起送 */}
+        {/* 结算 or 外送費 */}
         {cartList.length > 0 ? (
-          <div className="goToPreview">去结算</div>
+          <div className="goToPreview">去結算</div>
         ) : (
-          <div className="minFee">¥20起送</div>
+          <div className="minFee">$20外送費</div>
         )}
       </div>
-      {/* 添加visible类名 div会显示出来 */}
-      <div className={classNames('cartPanel')}>
+      {/* 添加visible類名 div會顯示出来 */}
+      <div className={classNames('cartPanel', visible && 'visible')}>
         <div className="header">
-          <span className="text">购物车</span>
-          <span className="clearCart">
-            清空购物车
+          <span className="text">購物車</span>
+          <span className="clearCart" onClick={() => dispatch(clearCart())}>
+            清空購物車
           </span>
         </div>
 
-        {/* 购物车列表 */}
+        {/* 購物車列表 */}
         <div className="scrollArea">
-          {cart.map(item => {
+          {cartList.map(item => {
             return (
               <div className="cartItem" key={item.id}>
                 <img className="shopPic" src={item.picture} alt="" />
@@ -64,7 +74,7 @@ const Cart = () => {
                 </div>
                 <div className="skuBtnWrapper btnGroup">
                   <Count
-                    count={item.count}
+                    count={item.count} onPlus={() => dispatch(addCounter({ id: item.id }))} onMinus={() => dispatch(subCounter({ id: item.id }))}
                   />
                 </div>
               </div>

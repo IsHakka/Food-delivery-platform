@@ -29,6 +29,23 @@ export const foodStore = createSlice({
             } else {
                 state.cartList.push(action.payload)
             }
+        },
+        // count增加
+        addCounter(state, action) {
+            const item = state.cartList.find(item => item.id === action.payload.id)
+            item.count++
+        },
+        // count減少
+        subCounter(state, action) {
+            const item = state.cartList.find(item => item.id === action.payload.id)
+            if(item.count === 0){
+                return
+            }
+            item.count--
+        },
+        // 清除購物車
+        clearCart(state,action){
+            state.cartList = []
         }
     }
 });
@@ -41,4 +58,4 @@ export const fetchFoodList = () => {
     }
 }
 
-export const { changeActiveIndex, addCart } = foodStore.actions
+export const { changeActiveIndex, addCart, addCounter, subCounter ,clearCart} = foodStore.actions

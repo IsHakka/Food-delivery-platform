@@ -11,7 +11,7 @@ const Menu = () => {
   const menus = foodsList.map(item => ({ tag: item.tag, name: item.name }))
   return (
     <nav className="list-menu">
-      {/* 添加active类名会变成激活状态 */}
+      {/* 添加active類名会變成點擊狀態 */}
       {menus.map((item, index) => {
         return (
           <div

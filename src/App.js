@@ -29,7 +29,7 @@ const App = () => {
 
           <div className="list-content">
             <div className="goods-list">
-              {/* 外卖商品列表 */}
+              {/* 外送商品列表 */}
               {foodsList.map((item, index) => {
                 return (
                   activeIndex === index &&
